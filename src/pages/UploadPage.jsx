@@ -1,134 +1,138 @@
-import { useState } from 'react';
-import { Upload, File, Slack, Mail, Trash2, Plus } from 'lucide-react';
-import GlassCard from '../components/GlassCard';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import { Mail, Video, MessageSquare, Hexagon, ArrowRight, CheckCircle2, FileText, Upload } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const UploadPage = () => {
-    const [projectName, setProjectName] = useState('New BRD Project');
-    const [sources, setSources] = useState([
-        { id: 1, type: 'mail', name: 'Q3_Strategy_Meeting.msg', size: '1.2 MB', status: 'ready' },
-        { id: 2, type: 'slack', name: '#product-roadmap-threads.json', size: '450 KB', status: 'ready' },
-    ]);
+    const [projectName, setProjectName] = useState('');
+    const [files, setFiles] = useState({
+        emails: null,
+        transcripts: null,
+        slack: null,
+        pdf: null
+    });
+    const [isUploading, setIsUploading] = useState(false);
 
-    const addSource = (type) => {
-        const names = {
-            mail: 'Email_Thread_Archive.pst',
-            slack: 'Slack_Export_General.json',
-            file: 'Business_Requirements_V1.docx'
-        };
-        setSources([...sources, {
-            id: Date.now(),
-            type,
-            name: names[type],
-            size: '2.1 MB',
-            status: 'pending'
-        }]);
+    const emailInputRef = useRef(null);
+    const transcriptInputRef = useRef(null);
+    const slackInputRef = useRef(null);
+    const pdfInputRef = useRef(null);
+
+    const handleFileChange = (e, type) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFiles(prev => ({ ...prev, [type]: file }));
+        }
     };
 
-    const removeSource = (id) => {
-        setSources(sources.filter(s => s.id !== id));
+    const handleGenerate = async () => {
+        if (!projectName) return;
+        setIsUploading(true);
+
+        const formData = new FormData();
+        formData.append('project_name', projectName);
+        if (files.emails) formData.append('email_file', files.emails);
+        if (files.transcripts) formData.append('transcript_file', files.transcripts);
+        if (files.slack) formData.append('slack_file', files.slack);
+        if (files.pdf) formData.append('pdf_file', files.pdf);
+
+        try {
+            const uploadRes = await fetch('http://localhost:8000/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (uploadRes.ok) {
+                await fetch('http://localhost:8000/run-pipeline', { method: 'POST' });
+                window.location.href = '/processing';
+            }
+        } catch (error) {
+            console.error('Pipeline error:', error);
+            window.location.href = '/processing';
+        } finally {
+            setIsUploading(false);
+        }
     };
+
+    const isReady = projectName && (files.emails || files.transcripts || files.slack || files.pdf);
 
     return (
-        <div className="space-y-8">
-            <div>
-                <h1 className="text-3xl font-bold text-white mb-2">Initialize Project</h1>
-                <p className="text-slate-400">Identify project scope and ingest communication sources for AI analysis.</p>
+        <div className="max-w-7xl mx-auto py-12 px-6">
+            <header className="text-center mb-16 space-y-4">
+                <div className="flex items-center justify-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center shadow-2xl shadow-accent/30 rotate-3">
+                        <Hexagon className="text-white w-10 h-10" />
+                    </div>
+                    <div className="text-left">
+                        <h1 className="text-5xl font-black tracking-tighter text-white italic leading-none">BRD<span className="text-accent not-italic">Gen</span></h1>
+                        <p className="text-[10px] uppercase tracking-[0.4em] text-slate-500 font-bold mt-1">Enterprise Requirements Intelligence</p>
+                    </div>
+                </div>
+                <p className="text-xl text-slate-400 max-w-2xl mx-auto font-medium">
+                    Upload corporate signal streams & PDF idea logs for autonomous synthesis.
+                </p>
+            </header>
+
+            <div className="max-w-lg mx-auto mb-16 relative">
+                <label className="absolute -top-2.5 left-4 bg-background px-2 text-[10px] font-black uppercase tracking-widest text-accent z-10">Project Identity</label>
+                <input
+                    type="text"
+                    placeholder="Enter project name..."
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white text-lg focus:outline-none focus:border-accent transition-all shadow-inner font-bold"
+                />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Project Info */}
-                <div className="lg:col-span-1">
-                    <GlassCard className="h-full">
-                        <h3 className="text-lg font-semibold text-white mb-6">Project Metadata</h3>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Project Name</label>
-                                <input
-                                    type="text"
-                                    value={projectName}
-                                    onChange={(e) => setProjectName(e.target.value)}
-                                    className="w-full mt-2 bg-white/5 border border-border rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
-                                />
-                            </div>
-                            <div>
-                                <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Industry Vertical</label>
-                                <select className="w-full mt-2 bg-white/5 border border-border rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors appearance-none">
-                                    <option>Fintech / Banking</option>
-                                    <option>Healthcare</option>
-                                    <option>E-commerce</option>
-                                    <option>SaaS / Tech</option>
-                                </select>
-                            </div>
-                        </div>
-                    </GlassCard>
-                </div>
+            {/* Hidden Inputs */}
+            <input type="file" ref={emailInputRef} className="hidden" onChange={(e) => handleFileChange(e, 'emails')} />
+            <input type="file" ref={transcriptInputRef} className="hidden" onChange={(e) => handleFileChange(e, 'transcripts')} />
+            <input type="file" ref={slackInputRef} className="hidden" onChange={(e) => handleFileChange(e, 'slack')} />
+            <input type="file" ref={pdfInputRef} className="hidden" onChange={(e) => handleFileChange(e, 'pdf')} accept=".pdf" />
 
-                {/* Source Ingestion */}
-                <div className="lg:col-span-2">
-                    <GlassCard className="h-full">
-                        <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-lg font-semibold text-white">Source Ingestion</h3>
-                            <div className="flex gap-2">
-                                <button onClick={() => addSource('mail')} className="p-2 bg-white/5 hover:bg-white/10 border border-border rounded-lg text-slate-300 transition-colors" title="Add Email Source">
-                                    <Mail className="w-4 h-4" />
-                                </button>
-                                <button onClick={() => addSource('slack')} className="p-2 bg-white/5 hover:bg-white/10 border border-border rounded-lg text-slate-300 transition-colors" title="Add Slack Source">
-                                    <Slack className="w-4 h-4" />
-                                </button>
-                                <button onClick={() => addSource('file')} className="p-2 bg-white/5 hover:bg-white/10 border border-border rounded-lg text-slate-300 transition-colors" title="Add File Source">
-                                    <File className="w-4 h-4" />
-                                </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                {[
+                    { id: 'emails', label: 'Emails', icon: Mail, desc: 'EML/MSG Stream', ref: emailInputRef },
+                    { id: 'transcripts', label: 'Meetings', icon: Video, desc: 'XML Transcripts', ref: transcriptInputRef },
+                    { id: 'slack', label: 'Slack', icon: MessageSquare, desc: 'JSON Workspace', ref: slackInputRef },
+                    { id: 'pdf', label: 'PDF Ideas', icon: FileText, desc: 'PDF Project Logs', ref: pdfInputRef }
+                ].map((box) => (
+                    <motion.div
+                        key={box.id}
+                        whileHover={{ y: -5 }}
+                        className="relative group cursor-pointer"
+                        onClick={() => box.ref.current.click()}
+                    >
+                        <div className={`h-full border-2 border-dashed rounded-3xl p-8 flex flex-col items-center text-center transition-all ${files[box.id] ? 'border-accent bg-accent/5' : 'border-white/10 group-hover:border-accent/40 group-hover:bg-white/[0.02]'}`}>
+                            <div className={`w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 ${files[box.id] ? 'text-accent' : 'text-slate-600'}`}>
+                                {files[box.id] ? <CheckCircle2 className="w-7 h-7" /> : <box.icon className="w-7 h-7" />}
+                            </div>
+                            <h3 className="text-sm font-black text-white mb-2 uppercase tracking-widest">{box.label}</h3>
+                            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest truncate max-w-full italic px-4">
+                                {files[box.id] ? files[box.id].name : box.desc}
+                            </p>
+
+                            <div className="mt-8 pt-6 border-t border-white/5 w-full">
+                                <span className={`text-[9px] font-black uppercase tracking-[0.2em] ${files[box.id] ? 'text-accent' : 'text-slate-700'}`}>
+                                    {files[box.id] ? 'File Linked' : 'Select Local'}
+                                </span>
                             </div>
                         </div>
+                    </motion.div>
+                ))}
+            </div>
 
-                        <div className="border-2 border-dashed border-border rounded-2xl p-10 flex flex-col items-center justify-center text-center group hover:border-primary/50 transition-colors cursor-pointer mb-8">
-                            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                <Upload className="w-8 h-8 text-primary" />
-                            </div>
-                            <p className="text-white font-medium">Drop requirement sources here</p>
-                            <p className="text-sm text-slate-500 mt-1">Accepts .pst, .json, .pdf, .docx, .msg</p>
-                        </div>
-
-                        <div className="space-y-3">
-                            <AnimatePresence>
-                                {sources.map((source) => (
-                                    <motion.div
-                                        key={source.id}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: 20 }}
-                                        className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-border"
-                                    >
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 bg-surface border border-border rounded-lg flex items-center justify-center">
-                                                {source.type === 'mail' && <Mail className="w-5 h-5 text-blue-400" />}
-                                                {source.type === 'slack' && <Slack className="w-5 h-5 text-purple-400" />}
-                                                {source.type === 'file' && <File className="w-5 h-5 text-teal-400" />}
-                                            </div>
-                                            <div>
-                                                <p className="text-sm font-medium text-white">{source.name}</p>
-                                                <p className="text-xs text-slate-500">{source.size}</p>
-                                            </div>
-                                        </div>
-                                        <button onClick={() => removeSource(source.id)} className="p-2 text-slate-500 hover:text-red-400 transition-colors">
-                                            <Trash2 className="w-4 h-4" />
-                                        </button>
-                                    </motion.div>
-                                ))}
-                            </AnimatePresence>
-                        </div>
-
-                        <div className="mt-8 flex justify-end">
-                            <button
-                                onClick={() => window.location.href = '/processing'}
-                                className="btn-primary flex items-center gap-2 px-8 py-3"
-                            >
-                                Start Analysis Pipeline
-                                <Plus className="w-4 h-4" />
-                            </button>
-                        </div>
-                    </GlassCard>
+            <div className="mt-20 flex flex-col items-center">
+                <button
+                    onClick={handleGenerate}
+                    disabled={!isReady || isUploading}
+                    className={`group relative px-20 py-6 rounded-2xl font-black text-xl italic uppercase tracking-tighter transition-all flex items-center gap-4 ${isReady && !isUploading ? 'bg-accent text-white shadow-[0_20px_50px_rgba(6,182,212,0.3)] hover:scale-105 active:scale-95' : 'bg-white/5 text-slate-600 cursor-not-allowed border border-white/5'}`}
+                >
+                    {isUploading ? 'Starting Engines...' : 'Synthesize BRD'}
+                    <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-2" />
+                </button>
+                <div className="mt-6 flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest italic">Multi-Source Hybrid Mode Active</span>
                 </div>
             </div>
         </div>

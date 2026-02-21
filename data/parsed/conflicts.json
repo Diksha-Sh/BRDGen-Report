@@ -1,0 +1,401 @@
+[
+  {
+    "id": "CF-001",
+    "title": "Parameter Contradiction: Timeline",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (2030 vs 16) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "Similarly, forecasts by the\nOrganization for Economic Co-operation and Development\n(OECD) suggest that global surface freight ton-kilometers may\ndouble by 2030 from their 2015 figures, with a notable 3.2-fold\nincrease expected in Asian regions [50].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "Increasing vehicle numbers and worsening traffic congestion\nReceived 16 May 2024; revised 5 November 2024 and 11 January 2025;\naccepted 21 January 2025.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-002",
+    "title": "Parameter Contradiction: Timeline",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (16 vs 21) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "As reported\nby the United Nations Conference on Trade and Development\n(UNCTAD), the share of e-commerce in retail sales jumped\nfrom 16% to 19% in 2020 [58].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "This work was supported in part by BK21 Fostering\nOutstanding Universities for Research (FOUR) funded by the Ministry of\nEducation of Korea and the National Research Foundation of Korea (NRF), in\npart by the Institute of Information and Communications Technology Planning\nand Evaluation (IITP) grant funded by the Korea Government [Ministry of\nScience and ICT (MSIT)] under Grant RS-2024-00438411, and in part by the\nNRF grant funded by the Korea Government (MSIT) under Grant RS-2022-\nNR070854.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-003",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (5 vs 10) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "5, MAY 2025 6393\nOptimizing Urban Logistics: Vehicle Routing\nProblem With Underground Transportation\nHo Young Jeong\n and Byung Duk Song\nAbstract\u2014 In response to increasing congestion and ineffi-\nciencies in urban freight transportation systems, driven by the\nrapid rise of e-commerce and urbanization, underground logistics\nare emerging as a promising alternative.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "Digital Object Identifier 10.1109/TITS.2025.3533477\nfurther strain existing urban ground road infrastructures, thus\nhindering logistics and distribution efficiency [9].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-004",
+    "title": "Parameter Contradiction: Speculative/Parking",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (53 vs 49) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "This rapid growth,\nwhile crucial to urban economic advancement, also poses\nconsiderable challenges for urban distribution networks [53].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "The\nrise of shared mobility, expected to grow substantially, presents\na possible solution to urban transport issues [49].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-005",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (5 vs 25) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "5, MAY 2025 6393\nOptimizing Urban Logistics: Vehicle Routing\nProblem With Underground Transportation\nHo Young Jeong\n and Byung Duk Song\nAbstract\u2014 In response to increasing congestion and ineffi-\nciencies in urban freight transportation systems, driven by the\nrapid rise of e-commerce and urbanization, underground logistics\nare emerging as a promising alternative.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "Recent\nstudies have also introduced multi-objective formulations for\nelectric vehicle routing problems, including shuttle bus fleets\nat university campuses [25] and unmanned vehicle fleets in\nlarge-scale urban logistics systems [71], offering valuable\nadvancements for optimizing urban logistics.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-006",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (5 vs 28) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "5, MAY 2025 6393\nOptimizing Urban Logistics: Vehicle Routing\nProblem With Underground Transportation\nHo Young Jeong\n and Byung Duk Song\nAbstract\u2014 In response to increasing congestion and ineffi-\nciencies in urban freight transportation systems, driven by the\nrapid rise of e-commerce and urbanization, underground logistics\nare emerging as a promising alternative.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "Air delivery\nsystems, especially drones, have also been recognized as a\npromising option for diverse logistical challenges [28], [29],\n[30].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-007",
+    "title": "Parameter Contradiction: Timeline",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (16 vs 11) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "As reported\nby the United Nations Conference on Trade and Development\n(UNCTAD), the share of e-commerce in retail sales jumped\nfrom 16% to 19% in 2020 [58].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "Nevertheless, their adoption is hindered by air traffic\nsafety and data privacy concerns [11], [46].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-008",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (48 vs 60) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "Traditional freight movement methods face significant chal-\nlenges within densely populated urban areas [48].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "The ULS concept\ninvolves using subterranean channels for logistics operations\nto alleviate surface traffic congestion, reduce operational costs,\nand improve delivery efficiency [60].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-009",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (5 vs 10) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "5, MAY 2025 6393\nOptimizing Urban Logistics: Vehicle Routing\nProblem With Underground Transportation\nHo Young Jeong\n and Byung Duk Song\nAbstract\u2014 In response to increasing congestion and ineffi-\nciencies in urban freight transportation systems, driven by the\nrapid rise of e-commerce and urbanization, underground logistics\nare emerging as a promising alternative.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "ULS also\naligns with sustainable urban development goals, introducing\na transformative logistics model with modular autonomous\nvehicles and dynamic pickup and delivery systems [10], [52].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-010",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (48 vs 4) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "Traditional freight movement methods face significant chal-\nlenges within densely populated urban areas [48].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "This work is licensed under a Creative Commons Attribution 4.0 License.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-011",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (5 vs 4) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "5, MAY 2025 6393\nOptimizing Urban Logistics: Vehicle Routing\nProblem With Underground Transportation\nHo Young Jeong\n and Byung Duk Song\nAbstract\u2014 In response to increasing congestion and ineffi-\nciencies in urban freight transportation systems, driven by the\nrapid rise of e-commerce and urbanization, underground logistics\nare emerging as a promising alternative.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "For more information, see https://creativecommons.org/licenses/by/4.0/\n6394 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-012",
+    "title": "Parameter Contradiction: Speculative/Parking",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (3 vs 68) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "A case study, including sensitivity analysis based on Seoul\nSubway Line 3, demonstrates the practical applicability of the\nVRP-UT model, highlighting its potential to alleviate surface-level\ntraffic congestion, reduce operational costs, and shorten delivery\ntimes in densely populated urban areas.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "The resulting decrease in ground truck traffic also\nleads to considerable environmental and economic benefits,\nsuch as lower road maintenance costs, helping to offset the\nsubstantial initial investment needed for ULS infrastructure\n[68], [73].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-013",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (48 vs 2) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "Traditional freight movement methods face significant chal-\nlenges within densely populated urban areas [48].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "2) Hybrid Q-learning with Pruning for Dynamic\nRoute Optimization: Our hybrid framework, combin-\ning Q-learning with pruning techniques, dynamically\nadjusts to changing conditions such as traffic, delays,\nand operational disruptions.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-014",
+    "title": "Parameter Contradiction: Constraint",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (3 vs 6) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "3) Numerical and Sensitivity Analyses with Case Study:\nWhile many studies have relied on theoretical mod-\nels or limited case studies, we validate our approach\nthrough comprehensive numerical analyses and a case\nstudy based on Seoul Subway Line 3.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "L ITERATURE REVIEW\nUrban development and the continuous expansion of\nmetropolitan areas have brought about challenges such as\ntraffic congestion, pollution, and space constraints, which not\nonly hinder the efficiency of logistics but also have significant\nnegative impacts on the environment and urban mobility [6],\n[22].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-015",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (5 vs 26) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "5, MAY 2025 6393\nOptimizing Urban Logistics: Vehicle Routing\nProblem With Underground Transportation\nHo Young Jeong\n and Byung Duk Song\nAbstract\u2014 In response to increasing congestion and ineffi-\nciencies in urban freight transportation systems, driven by the\nrapid rise of e-commerce and urbanization, underground logistics\nare emerging as a promising alternative.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "Moreover, the integration of electric vehicles\nin urban logistics systems is an emerging solution, providing a\nmore sustainable and efficient way to navigate city infrastruc-\ntures [26].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-016",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (48 vs 24) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "Traditional freight movement methods face significant chal-\nlenges within densely populated urban areas [48].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "As cities grow in population and economic activity,\nthe strain on existing logistics infrastructure intensifies, result-\ning in inefficiencies and increased operational costs [24], [51].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-017",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (5 vs 16) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "5, MAY 2025 6393\nOptimizing Urban Logistics: Vehicle Routing\nProblem With Underground Transportation\nHo Young Jeong\n and Byung Duk Song\nAbstract\u2014 In response to increasing congestion and ineffi-\nciencies in urban freight transportation systems, driven by the\nrapid rise of e-commerce and urbanization, underground logistics\nare emerging as a promising alternative.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "The integration of underground systems within urban logis-\ntics networks offers a promising solution and has increasingly\nbeen considered as a viable option to address urban freight\nmovement by making use of the subterranean spaces available\nin dense urban environments [16], [23].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-018",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (4 vs 41) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "Date of publication 4 February 2025; date of cur-\nrent version 5 May 2025.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "Leveraging advanced\ninfrastructure and technological solutions, ULS can provide\nan alternative to traditional road-based delivery, helping alle-\nviate congestion, reduce pollution, and optimize the use of\nurban space [41], [69].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-019",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (5 vs 3) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "5, MAY 2025 6393\nOptimizing Urban Logistics: Vehicle Routing\nProblem With Underground Transportation\nHo Young Jeong\n and Byung Duk Song\nAbstract\u2014 In response to increasing congestion and ineffi-\nciencies in urban freight transportation systems, driven by the\nrapid rise of e-commerce and urbanization, underground logistics\nare emerging as a promising alternative.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "Early studies have focused on the\nfeasibility and implementation of ULS, exploring the technical\nand economic aspects of integrating underground transport\nsystems with urban logistics [3], [19].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-020",
+    "title": "Parameter Contradiction: Speculative/Parking",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (53 vs 21) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "This rapid growth,\nwhile crucial to urban economic advancement, also poses\nconsiderable challenges for urban distribution networks [53].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "While these studies\nhave established the potential benefits of ULS, they often\ndo not fully explore the integration of underground logistics\nwith surface-level transportation networks, leaving a gap in\naddressing the broader operational and strategic challenges of\nurban logistics [21], [40].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  },
+  {
+    "id": "CF-021",
+    "title": "Parameter Contradiction: Functional Requirement",
+    "type": "Numerical",
+    "owner": "Document Archive",
+    "recommendation": "Verify discrepant values (5 vs 34) across communication channels.",
+    "sourceA": {
+      "author": "Document Archive",
+      "text": "5, MAY 2025 6393\nOptimizing Urban Logistics: Vehicle Routing\nProblem With Underground Transportation\nHo Young Jeong\n and Byung Duk Song\nAbstract\u2014 In response to increasing congestion and ineffi-\nciencies in urban freight transportation systems, driven by the\nrapid rise of e-commerce and urbanization, underground logistics\nare emerging as a promising alternative.",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    },
+    "sourceB": {
+      "author": "Document Archive",
+      "text": "Various\nstudies have developed frameworks for improving routing,\nscheduling, and system flexibility, focusing on the integration\nof autonomous vehicles [34], multi-objective optimization\nmethods such as truck-drone collaboration [42], and flexi-\nble routing systems [36].",
+      "date": "2024-01-01",
+      "channel": "PDF Brief Case"
+    }
+  }
+]
