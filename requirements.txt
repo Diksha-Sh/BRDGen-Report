@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+python-multipart
+mailparser
+pypdf
+rapidfuzz
+openai
+scikit-learn
+networkx
+sentence-transformers

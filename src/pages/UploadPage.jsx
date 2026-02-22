@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Mail, Video, MessageSquare, Hexagon, ArrowRight, CheckCircle2, FileText, Upload } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const UploadPage = () => {
+    const navigate = useNavigate();
     const [projectName, setProjectName] = useState('');
     const [files, setFiles] = useState({
         emails: null,
@@ -24,33 +26,22 @@ const UploadPage = () => {
         }
     };
 
-    const handleGenerate = async () => {
+    const handleGenerate = () => {
         if (!projectName) return;
         setIsUploading(true);
 
-        const formData = new FormData();
-        formData.append('project_name', projectName);
-        if (files.emails) formData.append('email_file', files.emails);
-        if (files.transcripts) formData.append('transcript_file', files.transcripts);
-        if (files.slack) formData.append('slack_file', files.slack);
-        if (files.pdf) formData.append('pdf_file', files.pdf);
-
-        try {
-            const uploadRes = await fetch('http://localhost:8000/upload', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (uploadRes.ok) {
-                await fetch('http://localhost:8000/run-pipeline', { method: 'POST' });
-                window.location.href = '/processing';
+        // Pass files + project name to ProcessingPage which owns the API call
+        // so the animated pipeline progress is visible during the fetch
+        navigate('/processing', {
+            state: {
+                projectName,
+                files: {
+                    emails: files.emails || files.pdf,   // PDF treated as email doc
+                    transcripts: files.transcripts,
+                    slack: files.slack,
+                }
             }
-        } catch (error) {
-            console.error('Pipeline error:', error);
-            window.location.href = '/processing';
-        } finally {
-            setIsUploading(false);
-        }
+        });
     };
 
     const isReady = projectName && (files.emails || files.transcripts || files.slack || files.pdf);

@@ -1,0 +1,14 @@
+[
+    {
+        "sender": "Mike",
+        "role": "Security Lead",
+        "timestamp": "2026-02-22T10:15:00Z",
+        "content": "Make sure the system logs all admin actions for auditing purposes. This is a hard requirement for compliance."
+    },
+    {
+        "sender": "Sara",
+        "role": "Designer",
+        "timestamp": "2026-02-22T10:16:00Z",
+        "content": "The export feature should support PDF and Word formats. Standard corporate stuff."
+    }
+]

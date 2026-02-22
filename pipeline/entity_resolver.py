@@ -8,7 +8,9 @@ except ImportError:
 
 def resolve_entities(sentences):
     print("🚀 Stage 3: Entity Resolution via rapidfuzz...")
-    unique_names = list(set(s['sender'] for s in sentences))
+    if not sentences:
+        return [], {}
+    unique_names = list(set(s.get('sender', 'Unknown') for s in sentences if s.get('sender')))
     canonical_map = {}
     
     # Simple cluster

@@ -1,0 +1,5 @@
+<meeting>
+    <turn speaker="John (PM)" time="10:05:00">We need to ensure all user data is encrypted at rest using AES-256.</turn>
+    <turn speaker="Alice (UX)" time="10:06:30">I agree, and the login page should have a two-factor authentication option via email.</turn>
+    <turn speaker="Bob (Dev)" time="10:08:00">Let's set the project delivery date to June 15th, 2026.</turn>
+</meeting>

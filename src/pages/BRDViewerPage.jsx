@@ -1,170 +1,292 @@
-import React, { useState } from 'react';
-import { FileText, Search, AlertCircle, CheckCircle, ChevronRight, Bookmark, Edit3, MessageSquare, Clock, Users, Hash, Zap, Sparkles, Filter } from 'lucide-react';
-import GlassCard from '../components/GlassCard';
-import { brdSections, parkingLot } from '../data/mockData';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Search, ChevronDown, ChevronUp, ExternalLink, Tag, AlertTriangle, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const BRDViewerPage = () => {
-    const [query, setQuery] = useState('');
-    const [isRegenerating, setIsRegenerating] = useState(false);
+const BRD_SECTION_ORDER = [
+    'Executive Summary',
+    'Project Scope & Objectives',
+    'Stakeholder Analysis',
+    'Functional Requirements',
+    'Non-Functional Requirements',
+    'Data & Security Compliance',
+    'Timeline & Milestones',
+    'Identified Risks & Conflicts',
+];
 
-    const handleRegen = () => {
-        setIsRegenerating(true);
-        setTimeout(() => setIsRegenerating(false), 2000);
-    };
+const LABEL_COLORS = {
+    hard_requirement: 'bg-accent/10 text-accent border-accent/30',
+    soft_requirement: 'bg-slate-700/60 text-slate-400 border-slate-600/30',
+};
 
-    const getLabelStyles = (label) => {
-        const uLabel = label.toUpperCase();
-        if (uLabel.includes('REQUIREMENT')) return 'text-accent bg-accent/10 border-accent/20';
-        if (uLabel.includes('CONSTRAINT')) return 'text-orange-400 bg-orange-400/10 border-orange-400/20';
-        if (uLabel.includes('TIMELINE')) return 'text-purple-400 bg-purple-400/10 border-purple-400/20';
-        if (uLabel.includes('SECURITY')) return 'text-blue-400 bg-blue-400/10 border-blue-400/20';
-        if (uLabel.includes('NEGATION')) return 'text-red-400 bg-red-400/10 border-red-400/20';
-        if (uLabel.includes('STAKEHOLDER')) return 'text-amber-400 bg-amber-400/10 border-amber-400/20';
-        return 'text-slate-400 bg-slate-400/10 border-slate-400/20';
-    };
+const CitationBadge = ({ req, onSelect }) => (
+    <button
+        onClick={() => onSelect(req)}
+        className="inline-flex items-center gap-1 ml-1 px-1.5 py-0.5 rounded text-[9px] font-black bg-accent/15 text-accent border border-accent/20 hover:bg-accent/25 transition-all"
+    >
+        [{req.id}] {req.corroboration_count > 1 ? `×${req.corroboration_count}` : ''}
+    </button>
+);
+
+const CitationDrawer = ({ req, onClose }) => {
+    if (!req) return null;
+    return (
+        <motion.div
+            initial={{ x: 400, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 400, opacity: 0 }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="fixed right-0 top-0 h-full w-96 bg-[#0d1117] border-l border-white/10 z-50 flex flex-col shadow-2xl"
+        >
+            <div className="p-6 border-b border-white/10 flex items-start justify-between">
+                <div>
+                    <p className="text-[10px] font-black text-accent uppercase tracking-widest">{req.id}</p>
+                    <p className="text-white font-bold text-sm mt-1 leading-snug line-clamp-2">{req.canonical_text}</p>
+                </div>
+                <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors ml-4 mt-1 flex-shrink-0">
+                    ✕
+                </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                <div className="flex items-center gap-3">
+                    <span className={`text-[9px] font-black uppercase px-2 py-1 rounded border ${LABEL_COLORS[req.label] || LABEL_COLORS.soft_requirement}`}>
+                        {req.label?.replace('_', ' ')}
+                    </span>
+                    <span className="text-[9px] text-slate-500 font-medium">
+                        {Math.round((req.confidence || 0) * 100)}% confidence
+                    </span>
+                    {req.priority && (
+                        <span className="text-[9px] font-black text-slate-400 uppercase">{req.priority} priority</span>
+                    )}
+                </div>
+
+                <div>
+                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">Source Trail</p>
+                    <div className="space-y-3">
+                        {(req.sources || []).map((src, i) => (
+                            <div key={i} className="p-3 rounded-xl bg-white/[0.03] border border-white/8">
+                                <div className="flex items-center justify-between mb-2">
+                                    <span className="text-xs font-bold text-white">{src.sender || 'Unknown'}</span>
+                                    <span className="text-[9px] text-slate-500">{src.source || 'Unknown'}</span>
+                                </div>
+                                <p className="text-[9px] text-slate-400 italic leading-relaxed">"{src.content?.slice(0, 200)}"</p>
+                                {src.timestamp && src.timestamp !== 'unknown' && (
+                                    <p className="text-[9px] text-slate-600 mt-1">{src.timestamp}</p>
+                                )}
+                            </div>
+                        ))}
+                        {(!req.sources || req.sources.length === 0) && (
+                            <p className="text-slate-600 text-sm">No source details available.</p>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </motion.div>
+    );
+};
+
+const BRDSection = ({ title, content, requirements, conflictIds, onCitationClick }) => {
+    const [collapsed, setCollapsed] = useState(false);
+    const paragraphs = content ? content.split('\n').filter(p => p.trim()) : [];
 
     return (
-        <div className="flex gap-8 max-w-[1600px] mx-auto pb-20 px-6">
-            {/* Sidebar Outlines */}
-            <div className="w-64 shrink-0 hidden xl:block">
-                <div className="sticky top-8 space-y-6">
-                    <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] pl-4">Intelligence Outline</h3>
-                    <nav className="space-y-1">
-                        {brdSections.map((section) => (
-                            <button
-                                key={section.id}
-                                className="w-full text-left px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all text-slate-500 hover:text-white hover:bg-white/5 flex items-center gap-3 group border border-transparent hover:border-white/10"
-                            >
-                                <div className="h-1 w-1 rounded-full bg-slate-800 group-hover:bg-accent transition-colors" />
-                                {section.title}
-                            </button>
-                        ))}
-                    </nav>
+        <div className="bg-white/[0.02] border border-white/8 rounded-2xl overflow-hidden">
+            <button
+                onClick={() => setCollapsed(c => !c)}
+                className="w-full flex items-center justify-between p-6 hover:bg-white/[0.03] transition-colors"
+            >
+                <span className="text-sm font-black uppercase tracking-widest text-white">{title}</span>
+                {collapsed ? <ChevronDown className="w-4 h-4 text-slate-500" /> : <ChevronUp className="w-4 h-4 text-slate-500" />}
+            </button>
 
-                    <div className="p-6 rounded-2xl bg-accent/5 border border-accent/20 space-y-4">
-                        <div className="flex items-center gap-2 text-accent">
-                            <Zap className="w-4 h-4" />
-                            <span className="text-[10px] font-black uppercase tracking-widest">Model Audit</span>
-                        </div>
-                        <p className="text-[10px] text-slate-400 leading-relaxed font-bold uppercase tracking-tight">
-                            Synthesized by GPT-4o with BART-large-mnli validation. 100% Traceability active.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Document Area */}
-            <div className="flex-1 space-y-8 min-w-0">
-                <GlassCard className="p-2 border-accent/20 shadow-2xl shadow-accent/10 relative overflow-hidden">
-                    <AnimatePresence>
-                        {isRegenerating && (
-                            <motion.div
-                                initial={{ x: '-100%' }}
-                                animate={{ x: '100%' }}
-                                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                                className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/20 to-transparent pointer-events-none"
-                            />
+            <AnimatePresence>
+                {!collapsed && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="px-6 pb-6"
+                    >
+                        {paragraphs.length > 0 ? (
+                            <div className="space-y-4 text-sm text-slate-300 leading-relaxed">
+                                {paragraphs.map((para, i) => {
+                                    // Highlight REQ-IDs with clickable badges
+                                    const parts = para.split(/(\[REQ-\d+\])/g);
+                                    return (
+                                        <p key={i}>
+                                            {parts.map((part, j) => {
+                                                const match = part.match(/\[REQ-(\d+)\]/);
+                                                if (match) {
+                                                    const reqId = `REQ-${match[1]}`;
+                                                    const req = requirements.find(r => r.id === reqId);
+                                                    if (req) return <CitationBadge key={j} req={req} onSelect={onCitationClick} />;
+                                                    return <span key={j} className="text-accent/60 text-[10px] font-mono">{part}</span>;
+                                                }
+                                                return <span key={j}>{part}</span>;
+                                            })}
+                                        </p>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <p className="text-slate-600 text-sm italic">No content generated for this section.</p>
                         )}
-                    </AnimatePresence>
-                    <div className="flex items-center gap-4 relative z-10">
-                        <div className="bg-accent/10 p-3 rounded-xl border border-accent/20 text-accent">
-                            <Sparkles className={`w-5 h-5 ${isRegenerating ? 'animate-spin' : ''}`} />
-                        </div>
-                        <input
-                            type="text"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Ask GPT-4o to refine sections (e.g. 'Strengthen the technical constraints')..."
-                            className="flex-1 bg-transparent border-none focus:outline-none text-white font-bold text-sm placeholder:text-slate-600"
-                        />
-                        <button
-                            onClick={handleRegen}
-                            className="bg-accent hover:opacity-90 text-white py-3 px-8 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl shadow-accent/20"
-                        >
-                            {isRegenerating ? 'Processing...' : 'Refine'}
-                        </button>
-                    </div>
-                </GlassCard>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
 
-                <GlassCard padding={false} className="overflow-hidden shadow-2xl border-white/5 bg-[#1a1a1f]">
-                    <header className="p-12 border-b border-white/5 bg-white/[0.01]">
-                        <div className="flex justify-between items-start mb-8">
-                            <div>
-                                <h1 className="text-5xl font-black text-white italic tracking-tighter mb-3">Enterprise <span className="text-accent not-italic">Synthesis</span></h1>
-                                <p className="text-slate-500 text-[10px] uppercase tracking-[0.5em] font-black">Business Requirements Intelligence v3.4</p>
-                            </div>
-                            <div className="flex flex-col items-end">
-                                <span className="text-[10px] font-black text-accent uppercase tracking-widest bg-accent/10 px-3 py-1 rounded-full border border-accent/20 mb-2">Internal Draft</span>
-                                <span className="text-[9px] font-bold text-slate-600 uppercase tracking-widest">Confidence Score: 98.4%</span>
-                            </div>
-                        </div>
-                    </header>
+const BRDViewerPage = () => {
+    const navigate = useNavigate();
+    const [sessionData, setSessionData] = useState(null);
+    const [search, setSearch] = useState('');
+    const [selectedReq, setSelectedReq] = useState(null);
 
-                    <div className="p-16 space-y-24">
-                        {brdSections.map((section) => (
-                            <section key={section.id} className="space-y-10">
-                                <div className="flex items-center gap-6">
-                                    <h2 className="text-3xl font-black text-white uppercase tracking-tight italic">{section.title}</h2>
-                                    <div className="h-[1px] flex-1 bg-white/5" />
-                                </div>
+    useEffect(() => {
+        const raw = sessionStorage.getItem('brd_data');
+        if (raw) setSessionData(JSON.parse(raw));
+    }, []);
 
-                                {section.content && <p className="text-slate-400 text-lg leading-relaxed font-medium italic opacity-80 border-l-2 border-white/5 pl-8">{section.content}</p>}
-
-                                {section.requirements && (
-                                    <div className="space-y-6">
-                                        {section.requirements.map((req) => (
-                                            <motion.div
-                                                key={req.id}
-                                                whileHover={{ x: 5 }}
-                                                className={`group p-8 rounded-3xl border transition-all ${req.status === 'conflict' ? 'bg-orange-500/5 border-orange-500/20' : 'bg-white/[0.02] border-white/5 hover:border-accent/40 hover:bg-white/[0.03]'}`}
-                                            >
-                                                <div className="flex justify-between items-start mb-6">
-                                                    <div className="flex items-center gap-4">
-                                                        <span className="text-[10px] font-black text-slate-600 tracking-[0.2em] uppercase">{req.id}</span>
-                                                        <span className={`px-3 py-1 rounded-lg text-[9px] font-black border uppercase tracking-widest ${getLabelStyles(req.label)}`}>
-                                                            {req.label}
-                                                        </span>
-                                                    </div>
-
-                                                    <button className="flex items-center gap-2 px-3 py-1.5 bg-accent/5 rounded-lg border border-white/5 text-[9px] font-black text-slate-500 uppercase tracking-widest hover:text-accent hover:border-accent/40 transition-all">
-                                                        <Hash className="w-3 h-3" />
-                                                        {req.citations} Signals
-                                                    </button>
-                                                </div>
-                                                <p className="text-xl leading-relaxed text-slate-300 font-medium group-hover:text-white transition-colors">{req.text}</p>
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                )}
-                            </section>
-                        ))}
-                    </div>
-                </GlassCard>
+    if (!sessionData) {
+        return (
+            <div className="max-w-3xl mx-auto py-24 px-6 text-center">
+                <p className="text-slate-400 text-xl mb-4">No BRD data found.</p>
+                <button onClick={() => navigate('/upload')} className="px-6 py-3 bg-accent text-white rounded-xl font-black uppercase tracking-wider text-sm">
+                    ← Upload Documents
+                </button>
             </div>
+        );
+    }
 
-            {/* Right Panel: Parking Lot */}
-            <div className="w-80 shrink-0 hidden 2xl:block">
-                <div className="sticky top-8 space-y-6">
-                    <GlassCard className="border-orange-500/20 bg-orange-500/[0.02]">
-                        <div className="flex items-center justify-between mb-10">
-                            <h3 className="text-[10px] font-black text-orange-500 uppercase tracking-[0.4em]">Audit Hold</h3>
-                            <Clock className="w-4 h-4 text-orange-500" />
-                        </div>
-                        <div className="space-y-8">
-                            {parkingLot.map((item) => (
-                                <div key={item.id} className="space-y-3 group pb-6 last:pb-0">
-                                    <p className="text-xs text-slate-400 leading-relaxed font-bold transition-colors group-hover:text-white italic">"{item.text}"</p>
-                                    <div className="flex justify-between items-center text-[9px] font-black uppercase tracking-widest text-slate-600">
-                                        <span>{item.date}</span>
-                                        <button className="text-accent hover:text-white transition-colors">Resolve</button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </GlassCard>
+    const brd_sections = sessionData.brd_sections || {};
+    const requirements = sessionData.requirements || [];
+    const conflicts = sessionData.conflicts || [];
+    const parking_lot = sessionData.parking_lot || [];
+
+    const conflictReqIds = new Set(
+        conflicts.flatMap(c => [
+            c.source_a?.content, c.source_b?.content
+        ]).filter(Boolean)
+    );
+
+    const sections = BRD_SECTION_ORDER
+        .filter(s => brd_sections[s])
+        .filter(s => !search || s.toLowerCase().includes(search.toLowerCase()) || brd_sections[s]?.toLowerCase().includes(search.toLowerCase()));
+
+    return (
+        <div className="max-w-5xl mx-auto py-10 px-6">
+            {/* Header */}
+            <div className="flex items-start justify-between gap-4 mb-8 flex-wrap">
+                <div>
+                    <button onClick={() => navigate('/dashboard')} className="flex items-center gap-2 text-slate-500 hover:text-slate-300 text-xs font-black uppercase tracking-widest mb-3 transition-colors">
+                        <ArrowLeft className="w-3.5 h-3.5" /> Dashboard
+                    </button>
+                    <h1 className="text-4xl font-black tracking-tighter text-white italic">BRD Document</h1>
+                    <p className="text-slate-400 text-sm mt-1">{sessionData.project_name} · {requirements.length} requirements · {Object.keys(brd_sections).length} sections</p>
+                </div>
+                <div className="flex gap-3 flex-wrap">
+                    <button onClick={() => navigate('/export')} className="px-4 py-2.5 bg-accent text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:scale-105 transition-all">
+                        Export BRD
+                    </button>
                 </div>
             </div>
+
+            {/* Search */}
+            <div className="relative mb-6">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                <input
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    placeholder="Search BRD sections..."
+                    className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-accent transition-colors"
+                />
+            </div>
+
+            {/* Sections */}
+            <div className="space-y-4 mb-10">
+                {sections.length > 0 ? sections.map((title, i) => (
+                    <motion.div
+                        key={title}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.04 }}
+                    >
+                        <BRDSection
+                            title={title}
+                            content={brd_sections[title]}
+                            requirements={requirements}
+                            conflictIds={conflictReqIds}
+                            onCitationClick={setSelectedReq}
+                        />
+                    </motion.div>
+                )) : (
+                    <div className="text-center py-16 text-slate-500">
+                        {search ? 'No sections match your search.' : 'No BRD sections generated yet.'}
+                    </div>
+                )}
+            </div>
+
+            {/* Requirements Index */}
+            {requirements.length > 0 && (
+                <div className="bg-white/[0.02] border border-white/8 rounded-2xl p-6 mb-6">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4">Requirements Index</p>
+                    <div className="space-y-2 max-h-64 overflow-y-auto">
+                        {requirements.map((req, i) => (
+                            <div
+                                key={i}
+                                onClick={() => setSelectedReq(req)}
+                                className="flex items-center gap-3 py-2 px-2 rounded-lg cursor-pointer hover:bg-white/[0.04] transition-colors group"
+                            >
+                                <span className="text-[9px] font-black text-accent/70 w-16 flex-shrink-0">{req.id}</span>
+                                <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded border flex-shrink-0 ${LABEL_COLORS[req.label] || LABEL_COLORS.soft_requirement}`}>
+                                    {req.label === 'hard_requirement' ? 'Hard' : 'Soft'}
+                                </span>
+                                <span className="text-[11px] text-slate-400 group-hover:text-slate-200 truncate transition-colors">
+                                    {(req.canonical_text || '').slice(0, 90)}
+                                </span>
+                                <ExternalLink className="w-3 h-3 text-slate-700 group-hover:text-accent flex-shrink-0 ml-auto transition-colors" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Parking Lot */}
+            {parking_lot.length > 0 && (
+                <div className="bg-yellow-500/5 border border-yellow-500/20 rounded-2xl p-6">
+                    <p className="text-[10px] font-black text-yellow-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <AlertTriangle className="w-3.5 h-3.5" /> Parking Lot — Low Confidence ({parking_lot.length})
+                    </p>
+                    <div className="space-y-2">
+                        {parking_lot.map((req, i) => (
+                            <div key={i} className="flex items-center gap-3 text-[11px] text-slate-400">
+                                <span className="text-yellow-400/60 font-mono text-[9px] w-16 flex-shrink-0">{req.id}</span>
+                                <span className="truncate">{(req.canonical_text || '').slice(0, 80)}</span>
+                                <span className="text-[9px] text-yellow-600 ml-auto flex-shrink-0">
+                                    {Math.round((req.confidence || 0) * 100)}%
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Citation Drawer */}
+            <AnimatePresence>
+                {selectedReq && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
+                            onClick={() => setSelectedReq(null)}
+                        />
+                        <CitationDrawer req={selectedReq} onClose={() => setSelectedReq(null)} />
+                    </>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
